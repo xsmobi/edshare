@@ -1,12 +1,12 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 // Airtable verbunden!
 
 var Airtable = require('airtable');
 var base = new Airtable({apiKey: 'keyDXdM9K9L8WfzIJ'}).base('appB6K9fLiEWtIDLL');
-
+var titles = "";
 
 base('Index').select({
     // Selecting the first 3 records in Grid view:
@@ -16,7 +16,8 @@ base('Index').select({
     // This function (`page`) will get called for each page of records.
 
     records.forEach(function(record) {
-        console.log('Retrieved', record.get('Title'));
+        console.log('Retrieved:...', record.get('Title'));
+	titles = titles + " " + record.get('Title') + "<br>";
 
         // document.writeln(Title); // **************************b
 	//console.log(Title);
@@ -39,11 +40,12 @@ base('Index').select({
 
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Hello World!<br>neu' + titles);
+  //res.write(titles);
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Example app listening at ... http://localhost:${port}`)
 
 
 
